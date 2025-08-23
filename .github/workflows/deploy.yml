@@ -1,4 +1,4 @@
-name: Build & Deploy (FTPS to cPanel)
+name: Build & Deploy (FTPS + API)
 
 on:
   push:
@@ -19,11 +19,10 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      # Create .env.production from GitHub Secrets (do not commit secrets)
+      # FRONTEND env for Vite build (you already created this secret)
       - name: Write .env.production
         run: |
           echo "VITE_API_BASE=${{ secrets.VITE_API_BASE }}" > .env.production
-          echo "Wrote .env.production with VITE_API_BASE"
 
       - name: Install deps
         run: npm ci || npm install
@@ -31,22 +30,69 @@ jobs:
       - name: Build Vite
         run: npm run build
 
-      # Upload dist/ to your domain root via FTPS
-      - name: Deploy via FTPS
+      # --- Prepare API bundle from your repo's `server/` folder ---
+      - name: Prepare API bundle
+        run: |
+          rm -rf api_build && mkdir -p api_build
+          cp -r server/* api_build/
+
+          # minimal package.json for cPanel Node app
+          cat > api_build/package.json <<'PKG'
+          {
+            "name": "creativeenergy-api",
+            "private": true,
+            "version": "1.0.0",
+            "type": "module",
+            "main": "index.js",
+            "scripts": { "start": "node index.js" },
+            "dependencies": {
+              "cors": "^2.8.5",
+              "dotenv": "^16.4.5",
+              "express": "^4.19.2",
+              "multer": "^1.4.5",
+              "nodemailer": "^6.9.14",
+              "zod": "^3.23.8"
+            }
+          }
+          PKG
+
+          # runtime .env for API (from GitHub Secrets)
+          cat > api_build/.env <<'ENVVARS'
+          PORT=${{ secrets.API_PORT }}
+          MAIL_TO=${{ secrets.MAIL_TO }}
+          SMTP_HOST=${{ secrets.SMTP_HOST }}
+          SMTP_PORT=${{ secrets.SMTP_PORT }}
+          SMTP_SECURE=${{ secrets.SMTP_SECURE }}
+          SMTP_USER=${{ secrets.SMTP_USER }}
+          SMTP_PASS=${{ secrets.SMTP_PASS }}
+          ENVVARS
+
+      # --- Deploy FE to "/" ---
+      - name: Deploy FE via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}     # usually 21
-          protocol: ftps                    # we’ll use explicit FTPS
+          port: ${{ secrets.FTP_PORT }}
+          protocol: ftps
           local-dir: dist/
           server-dir: ${{ secrets.DEPLOY_DIR }}/
-          dangerous-clean-slate: true
           exclude: |
-            **/.git*
-            **/.github/**
-            **/node_modules/**
-            **/src/**
-            **/tests/**
-            **/*.map
+            api/**
+          dangerous-clean-slate: true
+
+      # --- Deploy API to "/api" ---
+      - name: Deploy API via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT }}
+          protocol: ftps
+          local-dir: api_build/
+          server-dir: ${{ secrets.DEPLOY_DIR }}/api/
+          exclude: |
+            node_modules/**
+          dangerous-clean-slate: true
