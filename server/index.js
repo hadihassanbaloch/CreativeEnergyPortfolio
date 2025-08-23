@@ -47,9 +47,9 @@ const transporter = nodemailer.createTransport({
   },
 })
 
-app.get('/api/health', (_req, res) => res.json({ ok: true }))
+app.get('/health', (_req, res) => res.json({ ok: true }))
 
-app.post('/api/contact', upload.single('file'), async (req, res) => {
+app.post('/contact', upload.single('file'), async (req, res) => {
   try {
     const parsed = ContactSchema.safeParse({
       name: req.body.name,
