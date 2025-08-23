@@ -43,11 +43,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
           protocol: ftps
-          local-dir: ./dist/                 # ← note ./ and trailing /
+          local-dir: /                 # ← note ./ and trailing /
           server-dir: ${{ secrets.DEPLOY_DIR }} # make sure 
-          dangerous-clean-slate: false
-          exclude: |
-            **/.git*
-            **/.github/**
-            **/node_modules/**
-            **/server/**
+          dangerous-clean-slate: true
