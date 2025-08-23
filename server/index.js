@@ -8,16 +8,16 @@ import { z } from 'zod'
 
 const app = express()
 
-// Body parsers (for JSON and classic forms)
+// Body parsers
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// CORS (allow your site + local dev)
+// CORS
 const allowedOrigins = [
   'http://localhost:5173',
   'https://creativeenergy.pk',
   'https://www.creativeenergy.pk',
-  'https://api.creativeenergy.pk', // keep if you later move API to subdomain
+  'https://api.creativeenergy.pk',
 ].filter(Boolean)
 
 app.use(
@@ -29,13 +29,13 @@ app.use(
   })
 )
 
-// Accept optional attachment (max 10 MB)
+// Multer (optional single file)
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 10 * 1024 * 1024 },
 })
 
-// Validation schema
+// Validation
 const ContactSchema = z.object({
   name: z.string().min(2).max(120),
   email: z.string().email(),
@@ -49,24 +49,22 @@ const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: Number(process.env.SMTP_PORT || 587),
   secure: String(process.env.SMTP_SECURE) === 'true', // true for 465
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
+  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
 })
 
-// --- Routes ---
-// Root (cPanel availability check hits this)
-app.get('/', (_req, res) => {
+/* -------------------- Routes -------------------- */
+
+// Root (both / and /api for cPanel readiness checks)
+app.get(['/', '/api'], (_req, res) => {
   res.type('text/html')
   res.send('OK')
 })
 
-// Health check
-app.get('/health', (_req, res) => res.json({ ok: true }))
+// Health
+app.get(['/health', '/api/health'], (_req, res) => res.json({ ok: true }))
 
-// Contact endpoint (NO /api prefix here)
-app.post('/contact', upload.single('file'), async (req, res) => {
+// Contact (accepts prefixed and unprefixed)
+app.post(['/contact', '/api/contact'], upload.single('file'), async (req, res) => {
   try {
     const parsed = ContactSchema.safeParse({
       name: req.body.name,
