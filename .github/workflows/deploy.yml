@@ -1,9 +1,8 @@
-name: Build and Deploy (FTP)
+name: Build & Deploy (FTPS to cPanel)
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -11,38 +10,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
+          cache: 'npm'
+
+      # Create .env.production from GitHub Secrets (do not commit secrets)
+      - name: Write .env.production
+        run: |
+          echo "VITE_API_BASE=${{ secrets.VITE_API_BASE }}" > .env.production
+          echo "Wrote .env.production with VITE_API_BASE"
 
       - name: Install deps
-        run: npm ci || npm i
+        run: npm ci || npm install
 
-      - name: Set Vite env for build
-        run: echo "VITE_API_BASE=${{ secrets.VITE_API_BASE }}" >> $GITHUB_ENV
-
-      - name: Build
+      - name: Build Vite
         run: npm run build
 
-      - name: Verify build folder
-        run: |
-          echo "Workspace: $GITHUB_WORKSPACE"
-          ls -la
-          ls -la dist || (echo "dist/ not found" && exit 1)
-
-      - name: Upload dist via FTP (FTPS)
+      # Upload dist/ to your domain root via FTPS
+      - name: Deploy via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}
-          protocol: ftps
-          local-dir: /                 # ← note ./ and trailing /
-          server-dir: ${{ secrets.DEPLOY_DIR }} # make sure 
+          port: ${{ secrets.FTP_PORT }}     # usually 21
+          protocol: ftps                    # we’ll use explicit FTPS
+          local-dir: dist/
+          server-dir: ${{ secrets.DEPLOY_DIR }}/
           dangerous-clean-slate: true
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            **/src/**
+            **/tests/**
+            **/*.map
