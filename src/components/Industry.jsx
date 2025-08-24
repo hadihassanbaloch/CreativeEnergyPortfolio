@@ -90,7 +90,7 @@ export default function Industry({ selectedIndustry, setSelectedIndustry }) {
       </div>
 
       {/* Right Half — Selected Industry Details (White with gray containers) */}
-      <div className="split-half black relative overflow-hidden px-20">
+      <div className="split-half white relative overflow-hidden px-20">
         <div className="w-full max-w-2xl">
           <motion.div
             key={effectiveId}
@@ -115,7 +115,7 @@ export default function Industry({ selectedIndustry, setSelectedIndustry }) {
                       className: "text-black",
                     })}
                   </div>
-                  <h3 className="heading-2 mb-2 text-white">{selectedData.name}</h3>
+                  <h3 className="heading-2 mb-2 text-black">{selectedData.name}</h3>
                   <p className="body-medium text-brand">{selectedData.description}</p>
                 </div>
               </div>

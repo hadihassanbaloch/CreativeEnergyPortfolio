@@ -80,7 +80,7 @@ export default function Hero() {
       </div>
 
       {/* RIGHT — Spline (white) */}
-      <div className="split-half white relative overflow-hidden min-h-[70vh] lg:min-h-0">
+      <div className="split-half black relative overflow-hidden min-h-[70vh] lg:min-h-0">
         <div className="absolute inset-0 flex items-center justify-center">
           <Suspense
             fallback={
