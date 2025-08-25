@@ -128,7 +128,7 @@
 
 /* Particle animation */
 @utility animate-float-pulse {
-  animation: floatPulse var(--dur,2.8s) ease-in-out infinite;
+  animation: floatPulse var(--dur,1.8s) ease-in-out infinite;
 }
 
 /* Spinner for Suspense fallback */

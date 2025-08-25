@@ -23,7 +23,7 @@ const PricingSection = () => {
   return (
     <section className="split-section" id="pricing">
       {/* Left Half - Pricing Intro */}
-      <div className="split-half black">
+      <div className="split-half black px-20 ">
         <div className="w-full max-w-2xl">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -102,10 +102,10 @@ const PricingSection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className={`bg-white border-2 transition-all duration-300 relative ${
+                  className={`bg-white/10 border-2 transition-all duration-300 relative ${
                     isRecommended 
-                      ? 'border-white shadow-xl' 
-                      : 'border-white/20 hover:border-white'
+                      ? 'border-brand shadow-xl' 
+                      : 'border-black/10 hover:border-brand hover:shadow-lg'
                   }`}
                 >
                   {isRecommended && (
@@ -148,7 +148,7 @@ const PricingSection = () => {
                     </p>
                     
                     <motion.button 
-                      className={`w-full ${isRecommended ? 'bg-gray-900 text-white hover:bg-gray-800' : 'bg-white text-brand-primary border-2 border-white hover:bg-gray-50'} px-6 py-3 font-semibold transition-all duration-300 flex items-center justify-center gap-2`}
+                      className={` ${isRecommended ? 'bg-brand text-white hover:bg-brand/80' : 'bg-white text-brand-primary border-2 border-white hover:bg-gray-50'} px-6 py-3 font-semibold transition-all duration-300 flex items-center justify-right gap-2`}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >

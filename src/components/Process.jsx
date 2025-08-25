@@ -50,15 +50,15 @@ const Process = () => {
                     key={step.id}
                     className={`w-full flex items-start gap-4 p-4 text-left transition-all duration-300 ${
                       isActive 
-                        ? 'bg-gray-800 border-l-4 border-brand-primary' 
-                        : 'hover:bg-gray-900 border-l-4 border-transparent'
+                        ? 'border-l-4 border-brand-primary' 
+                        : 'hover:bg-black border-l-4 border-transparent'
                     }`}
                     onClick={() => setActiveStep(step.id)}
                     whileHover={{ x: 5 }}
                   >
                     <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
                       isActive 
-                        ? 'bg-brand-primary text-white' 
+                        ? ' text-brand' 
                         : isCompleted 
                           ? 'bg-gray-600 text-white'
                           : 'bg-gray-700 text-gray-400'
@@ -121,7 +121,7 @@ const Process = () => {
                 </p>
               </div>
 
-              <div className="bg-gray-800 border border-gray-700 p-8">
+              <div className="bg-black border border-gray-700 p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <Play className="text-brand-primary" size={20} />
                   <span className="heading-3 text-white">Live Demo</span>

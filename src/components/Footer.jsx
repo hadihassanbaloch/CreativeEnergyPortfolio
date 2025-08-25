@@ -122,7 +122,7 @@ const Footer = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
-          className="bg-gray-800 border border-gray-700 p-8 mb-16"
+          className="bg-black border border-gray-700 p-8 mb-16"
         >
           <div className="max-w-2xl">
             <h3 className="heading-2 text-white mb-4">
@@ -136,7 +136,7 @@ const Footer = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 p-4 bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:border-brand-primary focus:outline-none transition-colors"
+                className="flex-1 p-4 bg-white/15 border border-gray-600 text-white placeholder-gray-400 focus:border-brand-primary focus:outline-none transition-colors"
               />
               <motion.button 
                 className="btn-primary"

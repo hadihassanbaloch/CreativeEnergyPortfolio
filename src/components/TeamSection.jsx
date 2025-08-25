@@ -77,7 +77,7 @@ const TeamSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="group bg-gray-800 border border-gray-700 overflow-hidden hover:border-brand-primary transition-all duration-500"
+                className="group bg-white/10 border border-gray-700 overflow-hidden hover:border-brand-primary transition-all duration-500"
               >
                 <div className="relative h-48 bg-gradient-to-br from-brand-primary/20 to-transparent flex items-center justify-center overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-br from-black/50 to-transparent" />
@@ -120,7 +120,7 @@ const TeamSection = () => {
                       <h3 className="heading-3 group-hover:text-brand-primary transition-colors text-white">
                         {member.name}
                       </h3>
-                      <p className="body-medium text-brand-primary font-semibold">
+                      <p className="font-medium text-brand-primary group-hover:text-white font-bold">
                         {member.role}
                       </p>
                     </div>

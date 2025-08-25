@@ -99,27 +99,15 @@ export default function Industry({ selectedIndustry, setSelectedIndustry }) {
             transition={{ duration: 0.6 }}
           >
             {/* Industry Visualization */}
-            <div className="relative mb-8">
-              {/* Background doodle image (swap path via BigC if needed) */}
-              <img
-                src={BigC}
-                alt="Industry Visual"
-                className="w-full max-w-md opacity-30 grayscale transition-all duration-500 parallax-element"
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
+            
+              <div className="flex items-center justify-center mb-8">
                 <div className="text-center">
                   {/* Smaller icon inside a light gray pill */}
-                  <div className="w-12 h-12 bg-brand rounded-full flex items-center justify-center mb-4 mx-auto">
-                    {React.createElement(industryIcons[selectedData.id] ?? Users, {
-                      size: 24,
-                      className: "text-black",
-                    })}
-                  </div>
-                  <h3 className="heading-2 mb-2 text-black">{selectedData.name}</h3>
+                  
+                  <h3 className="display-huge mb-2 text-black">{selectedData.name}</h3>
                   <p className="body-medium text-brand">{selectedData.description}</p>
                 </div>
               </div>
-            </div>
 
             {/* Key Metric — gray container with black text */}
             <motion.div
@@ -129,16 +117,16 @@ export default function Industry({ selectedIndustry, setSelectedIndustry }) {
               transition={{ duration: 0.4, delay: 0.2 }}
             >
               <div className="flex items-center gap-3 mb-2">
-                <TrendingUp className="text-black" size={20} />
-                <span className="body-medium text-black">Case Study Result</span>
+                <TrendingUp className="text-white" size={20} />
+                <span className="body-medium text-white/90">Case Study Result</span>
               </div>
-              <p className="heading-2 text-black">{selectedData.caseMetric}</p>
+              <p className="heading-2 text-white">{selectedData.caseMetric}</p>
             </motion.div>
 
             {/* Services for Industry — gray items, black text */}
             <div>
-              <h4 className="heading-3 mb-4 text-black">Key Solutions</h4>
-              <div className="space-y-3">
+              <h4 className="heading-3 my-10 text-black">Key Solutions</h4>
+              <div className="space-y-10">
                 {selectedData.services.map((service, index) => (
                   <motion.div
                     key={service}

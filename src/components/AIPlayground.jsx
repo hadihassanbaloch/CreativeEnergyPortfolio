@@ -170,7 +170,7 @@ const AIPlayground = () => {
             >
               <div className="mb-6">
                 <h3 className="heading-2 mb-4 text-brand-primary">Strategic Recommendations</h3>
-                <div className="bg-gray-800 border border-gray-700 p-6">
+                <div className="bg-white/10 border border-gray-700 p-6">
                   <h4 className="heading-3 mb-4 text-white">Key Insights</h4>
                   <ul className="space-y-3">
                     {response.bullets.map((bullet, index) => (
@@ -191,7 +191,7 @@ const AIPlayground = () => {
 
               <div className="mb-6">
                 <h4 className="heading-3 mb-4 text-white">Action Plan</h4>
-                <div className="bg-gray-800 border border-gray-700 p-6">
+                <div className="bg-white/10 border border-gray-700 p-6">
                   <ol className="space-y-3">
                     {response.tasks.map((task, index) => (
                       <motion.li
